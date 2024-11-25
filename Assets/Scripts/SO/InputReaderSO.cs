@@ -45,7 +45,6 @@ public class InputReaderSO : ScriptableObject, PlayerControls.IGameplayActions
 
     public void OnMovement(InputAction.CallbackContext context)
     {
-        Debug.Log(context.phase);
         MoveEvent?.Invoke(context.ReadValue<Vector2>());
     }
 }
