@@ -1,0 +1,6 @@
+{
+  "PlayerStates": {
+    "Idle": ["Walk"],
+    "Walk": ["Idle"]
+  }
+}
