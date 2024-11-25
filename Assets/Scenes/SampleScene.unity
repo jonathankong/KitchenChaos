@@ -429,6 +429,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerVisual
       objectReference: {fileID: 0}
+    - target: {fileID: 6024899996280613204, guid: 1c5dda3c7cd3cf742afcade5419faeab, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 2678234b5f733754ba81dd2a8102b29d, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -607,6 +611,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1518783881}
   - component: {fileID: 1518783882}
+  - component: {fileID: 1518783883}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -651,6 +656,34 @@ MonoBehaviour:
     UseConstant: 0
     ConstantValue: 0
     Variable: {fileID: 11400000, guid: 08e7eb05bcb7596449295d68cbbe0798, type: 2}
+  minMoveMagnitude:
+    UseConstant: 0
+    ConstantValue: 0
+    Variable: {fileID: 11400000, guid: 531f56f7a8fe251499cb70812575abf9, type: 2}
+--- !u!114 &1518783883
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1518783879}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48c7a0f60c4e1b549b968769cdfae792, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startState: {fileID: 11400000, guid: 6678250376aad044fbfcc87c83d3f5a6, type: 2}
+  previousState: {fileID: 0}
+  currentState: {fileID: 0}
+  remainState: {fileID: 0}
+  transitionStateChanged: 0
+  stateTimeElapsed: 0
+  isActive: 1
+  _inputReader: {fileID: 11400000, guid: 13ced1be7962c294fbcbf1faf46d9e50, type: 2}
+  _minMoveMagThreshold:
+    UseConstant: 0
+    ConstantValue: 0
+    Variable: {fileID: 11400000, guid: 531f56f7a8fe251499cb70812575abf9, type: 2}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
