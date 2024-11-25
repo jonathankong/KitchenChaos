@@ -9,16 +9,17 @@ public class PlayerStateController : StateController
     [SerializeField]
     private FloatReference _minMoveMagThreshold;
 
+    #region Getters
     public Animator PlayerAnimator { get; private set; }
     public FloatReference MinMoveMagThreshold => _minMoveMagThreshold;
     public Vector2 MoveDirection { get; private set; }
+    #endregion
 
     #region UnityMethods
     private void Awake()
     {
         PlayerAnimator = GetComponentInChildren<Animator>();    
     }
-
     public override void Start()
     {
         base.Start();

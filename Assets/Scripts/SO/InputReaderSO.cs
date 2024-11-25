@@ -7,25 +7,12 @@ using UnityEngine.InputSystem;
 [CreateAssetMenu(menuName = "Input Reader")]
 public class InputReaderSO : ScriptableObject, PlayerControls.IGameplayActions
 {
-    #region Singleton
-    //private static readonly Lazy<PlayerControls> _playerControls = new Lazy<PlayerControls>(() => new PlayerControls());
-
-    //public static PlayerControls playerInputActions
-    //{
-    //    get
-    //    {
-    //        return _playerControls.Value;
-    //    }
-    //}
-    #endregion
-
     private PlayerControls _input;
 
     public event Action<Vector2> MoveEvent;
 
     private void OnEnable()
     {
-        Debug.Log("InputReader OnEnable");
         if (_input == null)
         {
             _input = new PlayerControls();
@@ -36,7 +23,6 @@ public class InputReaderSO : ScriptableObject, PlayerControls.IGameplayActions
 
     private void OnDisable()
     {
-        Debug.Log("InputReader OnDisable");
         if (_input != null)
         {
             _input.Gameplay.Disable();
