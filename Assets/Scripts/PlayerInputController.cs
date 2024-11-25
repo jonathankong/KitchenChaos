@@ -6,8 +6,12 @@ public class PlayerInputController : MonoBehaviour
     [SerializeField]
     private InputReaderSO _inputReader;
 
-    public FloatReference moveSpeed;
-    public FloatReference rotationSpeed;
+    [SerializeField]
+    private FloatReference moveSpeed;
+    [SerializeField]
+    private FloatReference rotationSpeed;
+    [SerializeField]
+    private FloatReference minMoveMagnitude;
 
     private Vector3 _lastPosition;
     private Vector3 _moveDirection;
@@ -20,26 +24,26 @@ public class PlayerInputController : MonoBehaviour
 
     private void OnEnable()
     {
-        _inputReader.MoveEvent += MovePlayer;
+        _inputReader.MoveEvent += OnMoveInput;
     }
 
     private void OnDisable()
     {
-        _inputReader.MoveEvent -= MovePlayer;
+        _inputReader.MoveEvent -= OnMoveInput;
     }
 
-    private void MovePlayer(Vector2 vector) => _moveDirection = new Vector3(vector.x, 0f, vector.y);
+    private void OnMoveInput(Vector2 vector) => _moveDirection = new Vector3(vector.x, 0f, vector.y); 
 
     private void TurnPlayerToFaceMovementDirection()
     {
         // Calculate the direction of movement
         Vector3 movementDirection = transform.position - _lastPosition;
-        if (movementDirection.magnitude > 0.01f) // Check if the movement is significant enough
+        if (movementDirection.magnitude > minMoveMagnitude.Value) // Check if the movement is significant enough
         {
             // Calculate the target rotation based on the movement direction
             Quaternion targetRotation = Quaternion.LookRotation(movementDirection.normalized);
 
-            // Smoothly rotate towards the target rotation
+            // Smoothly rotate towards the target rotation using spherical rotations
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed.Value * Time.deltaTime);
         }
 
