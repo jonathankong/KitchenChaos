@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a9714a9e0c9361469dde2b1c6da147f, type: 3}
   m_Name: RotationSpeedFV
   m_EditorClassIdentifier: 
-  Value: 20
+  Value: 50
