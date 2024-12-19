@@ -3,10 +3,10 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "StateMachine/State")]
 public class State : ScriptableObject
 {
-    public Action[] setupActions;
-    public Action[] actions;
+    public SMAction[] setupActions;
+    public SMAction[] actions;
     //public EventAction[] eventTriggeredActions;
-    public Action[] exitActions;
+    public SMAction[] exitActions;
     public Transition[] transitions;
 
     // for visualisation at the Scene
