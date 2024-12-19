@@ -13,6 +13,15 @@
                     "processors": "NormalizeVector2",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "Interact",
+                    "type": "Button",
+                    "id": "2be4b0a9-495a-4a28-9886-5c1ce6c4f465",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -70,6 +79,73 @@
                     "action": "Movement",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "175a13c6-f1c9-4c7f-ab88-e706d55d67f3",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";KeyboardMouse",
+                    "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "DebugInGameplay",
+            "id": "e31cc8ed-9b4e-4320-a699-ddcf6273f955",
+            "actions": [
+                {
+                    "name": "DebugToggle",
+                    "type": "Button",
+                    "id": "37874d1c-285a-4295-85f3-1b537cefef5e",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "b39849ff-1429-46b7-8252-61cba6fa6adb",
+                    "path": "<Keyboard>/backquote",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "DebugToggle",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Debug",
+            "id": "0dabb0c2-32e2-41c9-a49a-ef28f215e21e",
+            "actions": [
+                {
+                    "name": "MouseSelect",
+                    "type": "Button",
+                    "id": "2d563edd-d142-4039-a4da-9bec8d353be7",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "d384823b-c648-4a22-a6cd-c614a80722a1",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";KeyboardMouse",
+                    "action": "MouseSelect",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }

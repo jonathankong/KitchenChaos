@@ -35,6 +35,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": ""NormalizeVector2"",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Interact"",
+                    ""type"": ""Button"",
+                    ""id"": ""2be4b0a9-495a-4a28-9886-5c1ce6c4f465"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -92,6 +101,73 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""Movement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""175a13c6-f1c9-4c7f-ab88-e706d55d67f3"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";KeyboardMouse"",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""DebugInGameplay"",
+            ""id"": ""e31cc8ed-9b4e-4320-a699-ddcf6273f955"",
+            ""actions"": [
+                {
+                    ""name"": ""DebugToggle"",
+                    ""type"": ""Button"",
+                    ""id"": ""37874d1c-285a-4295-85f3-1b537cefef5e"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""b39849ff-1429-46b7-8252-61cba6fa6adb"",
+                    ""path"": ""<Keyboard>/backquote"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""DebugToggle"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""Debug"",
+            ""id"": ""0dabb0c2-32e2-41c9-a49a-ef28f215e21e"",
+            ""actions"": [
+                {
+                    ""name"": ""MouseSelect"",
+                    ""type"": ""Button"",
+                    ""id"": ""2d563edd-d142-4039-a4da-9bec8d353be7"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""d384823b-c648-4a22-a6cd-c614a80722a1"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";KeyboardMouse"",
+                    ""action"": ""MouseSelect"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -118,11 +194,20 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         // Gameplay
         m_Gameplay = asset.FindActionMap("Gameplay", throwIfNotFound: true);
         m_Gameplay_Movement = m_Gameplay.FindAction("Movement", throwIfNotFound: true);
+        m_Gameplay_Interact = m_Gameplay.FindAction("Interact", throwIfNotFound: true);
+        // DebugInGameplay
+        m_DebugInGameplay = asset.FindActionMap("DebugInGameplay", throwIfNotFound: true);
+        m_DebugInGameplay_DebugToggle = m_DebugInGameplay.FindAction("DebugToggle", throwIfNotFound: true);
+        // Debug
+        m_Debug = asset.FindActionMap("Debug", throwIfNotFound: true);
+        m_Debug_MouseSelect = m_Debug.FindAction("MouseSelect", throwIfNotFound: true);
     }
 
     ~@PlayerControls()
     {
         UnityEngine.Debug.Assert(!m_Gameplay.enabled, "This will cause a leak and performance issues, PlayerControls.Gameplay.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_DebugInGameplay.enabled, "This will cause a leak and performance issues, PlayerControls.DebugInGameplay.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_Debug.enabled, "This will cause a leak and performance issues, PlayerControls.Debug.Disable() has not been called.");
     }
 
     public void Dispose()
@@ -185,11 +270,13 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Gameplay;
     private List<IGameplayActions> m_GameplayActionsCallbackInterfaces = new List<IGameplayActions>();
     private readonly InputAction m_Gameplay_Movement;
+    private readonly InputAction m_Gameplay_Interact;
     public struct GameplayActions
     {
         private @PlayerControls m_Wrapper;
         public GameplayActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @Movement => m_Wrapper.m_Gameplay_Movement;
+        public InputAction @Interact => m_Wrapper.m_Gameplay_Interact;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -202,6 +289,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Movement.started += instance.OnMovement;
             @Movement.performed += instance.OnMovement;
             @Movement.canceled += instance.OnMovement;
+            @Interact.started += instance.OnInteract;
+            @Interact.performed += instance.OnInteract;
+            @Interact.canceled += instance.OnInteract;
         }
 
         private void UnregisterCallbacks(IGameplayActions instance)
@@ -209,6 +299,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Movement.started -= instance.OnMovement;
             @Movement.performed -= instance.OnMovement;
             @Movement.canceled -= instance.OnMovement;
+            @Interact.started -= instance.OnInteract;
+            @Interact.performed -= instance.OnInteract;
+            @Interact.canceled -= instance.OnInteract;
         }
 
         public void RemoveCallbacks(IGameplayActions instance)
@@ -226,6 +319,98 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         }
     }
     public GameplayActions @Gameplay => new GameplayActions(this);
+
+    // DebugInGameplay
+    private readonly InputActionMap m_DebugInGameplay;
+    private List<IDebugInGameplayActions> m_DebugInGameplayActionsCallbackInterfaces = new List<IDebugInGameplayActions>();
+    private readonly InputAction m_DebugInGameplay_DebugToggle;
+    public struct DebugInGameplayActions
+    {
+        private @PlayerControls m_Wrapper;
+        public DebugInGameplayActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @DebugToggle => m_Wrapper.m_DebugInGameplay_DebugToggle;
+        public InputActionMap Get() { return m_Wrapper.m_DebugInGameplay; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(DebugInGameplayActions set) { return set.Get(); }
+        public void AddCallbacks(IDebugInGameplayActions instance)
+        {
+            if (instance == null || m_Wrapper.m_DebugInGameplayActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_DebugInGameplayActionsCallbackInterfaces.Add(instance);
+            @DebugToggle.started += instance.OnDebugToggle;
+            @DebugToggle.performed += instance.OnDebugToggle;
+            @DebugToggle.canceled += instance.OnDebugToggle;
+        }
+
+        private void UnregisterCallbacks(IDebugInGameplayActions instance)
+        {
+            @DebugToggle.started -= instance.OnDebugToggle;
+            @DebugToggle.performed -= instance.OnDebugToggle;
+            @DebugToggle.canceled -= instance.OnDebugToggle;
+        }
+
+        public void RemoveCallbacks(IDebugInGameplayActions instance)
+        {
+            if (m_Wrapper.m_DebugInGameplayActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IDebugInGameplayActions instance)
+        {
+            foreach (var item in m_Wrapper.m_DebugInGameplayActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_DebugInGameplayActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public DebugInGameplayActions @DebugInGameplay => new DebugInGameplayActions(this);
+
+    // Debug
+    private readonly InputActionMap m_Debug;
+    private List<IDebugActions> m_DebugActionsCallbackInterfaces = new List<IDebugActions>();
+    private readonly InputAction m_Debug_MouseSelect;
+    public struct DebugActions
+    {
+        private @PlayerControls m_Wrapper;
+        public DebugActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @MouseSelect => m_Wrapper.m_Debug_MouseSelect;
+        public InputActionMap Get() { return m_Wrapper.m_Debug; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(DebugActions set) { return set.Get(); }
+        public void AddCallbacks(IDebugActions instance)
+        {
+            if (instance == null || m_Wrapper.m_DebugActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_DebugActionsCallbackInterfaces.Add(instance);
+            @MouseSelect.started += instance.OnMouseSelect;
+            @MouseSelect.performed += instance.OnMouseSelect;
+            @MouseSelect.canceled += instance.OnMouseSelect;
+        }
+
+        private void UnregisterCallbacks(IDebugActions instance)
+        {
+            @MouseSelect.started -= instance.OnMouseSelect;
+            @MouseSelect.performed -= instance.OnMouseSelect;
+            @MouseSelect.canceled -= instance.OnMouseSelect;
+        }
+
+        public void RemoveCallbacks(IDebugActions instance)
+        {
+            if (m_Wrapper.m_DebugActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IDebugActions instance)
+        {
+            foreach (var item in m_Wrapper.m_DebugActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_DebugActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public DebugActions @Debug => new DebugActions(this);
     private int m_KeyboardMouseSchemeIndex = -1;
     public InputControlScheme KeyboardMouseScheme
     {
@@ -238,5 +423,14 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     public interface IGameplayActions
     {
         void OnMovement(InputAction.CallbackContext context);
+        void OnInteract(InputAction.CallbackContext context);
+    }
+    public interface IDebugInGameplayActions
+    {
+        void OnDebugToggle(InputAction.CallbackContext context);
+    }
+    public interface IDebugActions
+    {
+        void OnMouseSelect(InputAction.CallbackContext context);
     }
 }
