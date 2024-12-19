@@ -27,12 +27,12 @@ public class PlayerStateController : StateController
     }
     private void OnEnable()
     {
-        _inputReader.MoveEvent += OnMoveInput;
+        _inputReader.MovePerformed += OnMoveInput;
     }
 
     private void OnDisable()
     {
-        _inputReader.MoveEvent -= OnMoveInput;
+        _inputReader.MovePerformed -= OnMoveInput;
     }
     #endregion
     // this should be added to the GameRestart EventListener as callback
