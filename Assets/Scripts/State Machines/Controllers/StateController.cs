@@ -31,14 +31,14 @@ public abstract class StateController : MonoBehaviour
     }
 
     // for visual aid to indicate which state this object is currently at
-    public virtual void OnDrawGizmos()
-    {
-        if (currentState != null)
-        {
-            Gizmos.color = currentState.sceneGizmoColor;
-            Gizmos.DrawWireSphere(this.transform.position, 1.0f);
-        }
-    }
+    //public virtual void OnDrawGizmos()
+    //{
+    //    if (currentState != null)
+    //    {
+    //        Gizmos.color = currentState.sceneGizmoColor;
+    //        Gizmos.DrawWireSphere(this.transform.position, 1.0f);
+    //    }
+    //}
 
     /********************************/
     // Regular methods
