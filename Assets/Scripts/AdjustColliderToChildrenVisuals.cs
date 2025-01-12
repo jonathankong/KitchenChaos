@@ -3,6 +3,7 @@ using UnityEngine;
 [RequireComponent(typeof(Collider))]
 public class AdjustColliderToChildrenVisuals : MonoBehaviour
 {
+    private readonly int roundToDecimalPlaces = 1;
     void Start()
     {
         Collider collider = GetComponent<Collider>();
@@ -13,6 +14,10 @@ public class AdjustColliderToChildrenVisuals : MonoBehaviour
             Debug.LogWarning("No renderers found in children. Collider will not be adjusted.");
             return;
         }
+
+        // Round the bounds center and size
+        bounds.center = RoundVector3(bounds.center);
+        bounds.size = RoundVector3(bounds.size);
 
         if (collider is BoxCollider boxCollider)
         {
@@ -85,6 +90,16 @@ public class AdjustColliderToChildrenVisuals : MonoBehaviour
             capsuleCollider.height = size.z;
             capsuleCollider.radius = Mathf.Max(size.x, size.y) / 2f;
         }
+    }
+
+    // Function to round a Vector3 to the specified number of decimal places
+    private Vector3 RoundVector3(Vector3 vector)
+    {
+        return new Vector3(
+            Mathf.Round(vector.x * Mathf.Pow(10, roundToDecimalPlaces)) / Mathf.Pow(10, roundToDecimalPlaces),
+            Mathf.Round(vector.y * Mathf.Pow(10, roundToDecimalPlaces)) / Mathf.Pow(10, roundToDecimalPlaces),
+            Mathf.Round(vector.z * Mathf.Pow(10, roundToDecimalPlaces)) / Mathf.Pow(10, roundToDecimalPlaces)
+        );
     }
 }
 
