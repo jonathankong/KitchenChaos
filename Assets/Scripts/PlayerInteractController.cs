@@ -1,31 +1,59 @@
+using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerInteractController : MonoBehaviour
 {
-    [SerializeField] private InputReaderSO _inputReader;
-    [SerializeField] private CapsuleCollider _collider;
-    [SerializeField] private FloatReference _selectDistance;
+    [SerializeField] private InputReader _inputReader;
+    [SerializeField] private InteractionManager _interactManager;
+
+    [SerializeField] private FloatReference _interactRange;
+
+    private BoxCollider _collider;
 
     private Vector3 _playerVisualCenter;
 
+    private bool _isInInteractRange = false;
+
+    private IHighlightable _prevHighlightObj;
+
+    private RaycastHit _raycastHit;
+
     private void Start()
     {
-        _collider = GetComponent<CapsuleCollider>();
+        _collider = GetComponent<BoxCollider>();
     }
 
     private void Update()
     {
-        _playerVisualCenter = transform.TransformPoint(_collider.center);
+        _playerVisualCenter = transform.TransformPoint(_collider.bounds.center);
     }
 
     private void FixedUpdate()
     {
-        Debug.Log(Physics.Raycast(_playerVisualCenter, transform.forward, out RaycastHit hitInfo, _selectDistance.Value));
+        _isInInteractRange = CheckInRangeToInteract();
     }
 
-    private void OnDrawGizmos()
+    private void PerformInteraction(bool isInteractBtnPressed)
     {
-        Gizmos.color = Color.red;
-        Gizmos.DrawLine(_playerVisualCenter, _playerVisualCenter + transform.forward * _selectDistance.Value);
+        if (isInteractBtnPressed && _isInInteractRange)
+        {
+            _raycastHit.collider?.GetComponent<IInteractable>().Interact();
+            if (_raycastHit.collider == null) Debug.Log("Object doesn't have a collider");
+        }
+    }
+    private bool CheckInRangeToInteract()
+    {
+        return _interactManager.CheckInRangeToInteract(transform, _interactRange);
+    }
+
+    private void OnEnable()
+    {
+        _inputReader.Interact += PerformInteraction;
+    }
+
+    private void OnDisable()
+    {
+        _inputReader.Interact -= PerformInteraction;
     }
 }
