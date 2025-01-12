@@ -1,16 +1,16 @@
 using UnityEngine;
 
-public class PlayerStateController : StateController
+public class PlayerStateController : StateController, IHasAnimator
 { 
     [SerializeField]
-    private InputReaderSO _inputReader;
+    private InputReader _inputReader;
 
     [Header("Player-Specific Components")]
     [SerializeField]
     private FloatReference _minMoveMagThreshold;
 
     #region Getters
-    public Animator PlayerAnimator { get; private set; }
+    public Animator @Animator { get; private set; }
     public FloatReference MinMoveMagThreshold => _minMoveMagThreshold;
     public Vector2 MoveDirection { get; private set; }
     #endregion
@@ -18,7 +18,7 @@ public class PlayerStateController : StateController
     #region UnityMethods
     private void Awake()
     {
-        PlayerAnimator = GetComponentInChildren<Animator>();    
+        @Animator = GetComponentInChildren<Animator>();    
     }
     public override void Start()
     {

@@ -1,6 +1,6 @@
 using UnityEditor;
 
-[CustomEditor(typeof(PlayerInputController))]
+[CustomEditor(typeof(PlayerMovementController))]
 public class PlayerInputControllerEditor : Editor
 {
     //SerializedProperty floatReference;

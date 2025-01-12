@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 
 public class ObjectSelector : MonoBehaviour, IBeginDragHandler, IEndDragHandler
 {
-    [SerializeField] private InputReaderSO _inputReader;
+    [SerializeField] private InputReader _inputReader;
 
     [SerializeField] private Canvas _debugMenu;
 
