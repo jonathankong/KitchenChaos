@@ -1,59 +1,31 @@
-using System;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class PlayerInteractController : MonoBehaviour
 {
-    [SerializeField] private InputReader _inputReader;
-    [SerializeField] private InteractionManager _interactManager;
-
-    [SerializeField] private FloatReference _interactRange;
-
-    private BoxCollider _collider;
+    [SerializeField] private InputReaderSO _inputReader;
+    [SerializeField] private CapsuleCollider _collider;
+    [SerializeField] private FloatReference _selectDistance;
 
     private Vector3 _playerVisualCenter;
 
-    private bool _isInInteractRange = false;
-
-    private IHighlightable _prevHighlightObj;
-
-    private RaycastHit _raycastHit;
-
     private void Start()
     {
-        _collider = GetComponent<BoxCollider>();
+        _collider = GetComponent<CapsuleCollider>();
     }
 
     private void Update()
     {
-        _playerVisualCenter = transform.TransformPoint(_collider.bounds.center);
+        _playerVisualCenter = transform.TransformPoint(_collider.center);
     }
 
     private void FixedUpdate()
     {
-        _isInInteractRange = CheckInRangeToInteract();
+        Debug.Log(Physics.Raycast(_playerVisualCenter, transform.forward, out RaycastHit hitInfo, _selectDistance.Value));
     }
 
-    private void PerformInteraction(bool isInteractBtnPressed)
+    private void OnDrawGizmos()
     {
-        if (isInteractBtnPressed && _isInInteractRange)
-        {
-            _raycastHit.collider?.GetComponent<IInteractable>().Interact();
-            if (_raycastHit.collider == null) Debug.Log("Object doesn't have a collider");
-        }
-    }
-    private bool CheckInRangeToInteract()
-    {
-        return _interactManager.CheckInRangeToInteract(transform, _interactRange);
-    }
-
-    private void OnEnable()
-    {
-        _inputReader.Interact += PerformInteraction;
-    }
-
-    private void OnDisable()
-    {
-        _inputReader.Interact -= PerformInteraction;
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(_playerVisualCenter, _playerVisualCenter + transform.forward * _selectDistance.Value);
     }
 }
