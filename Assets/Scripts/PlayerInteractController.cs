@@ -2,15 +2,15 @@ using UnityEngine;
 
 public class PlayerInteractController : MonoBehaviour
 {
-    [SerializeField] private InputReaderSO _inputReader;
-    [SerializeField] private CapsuleCollider _collider;
+    [SerializeField] private InputReader _inputReader;
+    [SerializeField] private BoxCollider _collider;
     [SerializeField] private FloatReference _selectDistance;
 
     private Vector3 _playerVisualCenter;
 
     private void Start()
     {
-        _collider = GetComponent<CapsuleCollider>();
+        _collider = GetComponent<BoxCollider>();
     }
 
     private void Update()
