@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4431180205747723407}
   - component: {fileID: 529098585692023947}
   m_Layer: 3
-  m_Name: ClearCounter
+  m_Name: CheeseCounter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -69,7 +69,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9fc9fabf89ccc9a4fbeaf2b6255baad0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _kitchenObj: {fileID: 11400000, guid: 030e7bacbd6881a479199177d5c38947, type: 2}
   _unhighlightTransform: {fileID: 0}
+  _interactManager: {fileID: 11400000, guid: e61ca8199168bd543a5ba20b7163c1d6, type: 2}
+  _hasSpawnedObject: 0
+  _objTransform: {fileID: 0}
+  _collider: {fileID: 0}
+  _objSpawnPoint: {x: 0, y: 0, z: 0}
 --- !u!114 &529098585692023947
 MonoBehaviour:
   m_ObjectHideFlags: 0
