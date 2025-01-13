@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "InteractionManager", menuName = "Managers/InteractionManager")]
@@ -9,23 +10,15 @@ public class InteractionManager : ScriptableObject
 
     private IHighlightable _prevHighlightObj;
 
-    #region Debug Gizmo Information
-    private Transform _t;
-    private FloatReference _fr;
-    private bool _range = false;
-    #endregion
     public void TriggerInteraction(GameObject obj)
     {
         // Trigger interaction logic, like highlighting objects
         OnObjectInteracted?.Invoke(obj);
     }
 
-    public bool CheckInRangeToInteract(Transform objTransform, FloatReference interactRange)
+    public bool CheckInRangeToInteract(BoxCollider objCollider, Transform objTransform, FloatReference interactRange)
     {
-        _t = objTransform;
-        _fr = interactRange;
-        var inRangeToInteract = Physics.Raycast(objTransform.position, objTransform.forward, out RaycastHit hitInfo, interactRange.Value);
-        _range = inRangeToInteract;
+        var inRangeToInteract = Physics.Raycast(objTransform.TransformPoint(objCollider.center), objTransform.forward, out RaycastHit hitInfo, interactRange.Value);
 
         if (inRangeToInteract && hitInfo.collider.TryGetComponent(out IHighlightable highlightObj))
         { 
@@ -41,13 +34,6 @@ public class InteractionManager : ScriptableObject
             _prevHighlightObj = null;
         }
         return false;
-    }
-
-    private void OnDrawGizmos()
-    {
-        if (_range) Gizmos.color = Color.green;
-        else Gizmos.color = Color.red;
-        Gizmos.DrawLine(_t.position + Vector3.up, (_t.position + Vector3.up) + _t.forward * _fr.Value);
     }
 }
 
