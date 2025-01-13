@@ -23,6 +23,7 @@ public class PlayerInteractController : MonoBehaviour
     private void Update()
     {
         _playerVisualCenter = _playerVisual.TransformPoint(_collider.center);
+
     }
 
     private void FixedUpdate()
@@ -43,14 +44,20 @@ public class PlayerInteractController : MonoBehaviour
             Gizmos.DrawLine(transform.TransformPoint(_collider.center), transform.TransformPoint(_collider.center) + _playerVisual.forward * _interactRange.Value);
     }
 
+    private void OnInteract(bool isInteract)
+    {
+        if (isInteract && _isInRange) _interactManager.TriggerInteraction();
+    }
+
     private void OnEnable()
     {
         _inputReader.MovePerformed += OnMoveInput;
+        _inputReader.Interact += OnInteract;
     }
 
     private void OnDisable()
     {
         _inputReader.MovePerformed -= OnMoveInput;
+        _inputReader.Interact -= OnInteract;
     }
-
 }
