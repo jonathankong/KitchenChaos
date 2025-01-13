@@ -1,4 +1,4 @@
-public interface IInteractable: IHighlightable 
+public interface IInteractable 
 {
     void Interact();
 }
